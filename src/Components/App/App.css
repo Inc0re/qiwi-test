@@ -1,0 +1,17 @@
+.app {
+  height: 100vh;
+  margin: 0 auto;
+  max-width: 90vw;
+  display: grid;
+  gap: 20px;
+  align-content: center;
+  justify-content: center;
+  grid-template-rows: repeat(2, auto);
+}
+
+.app__title {
+  text-align: center;
+  margin: 0;
+  font-size: 50px;
+  font-weight: 500;
+}
