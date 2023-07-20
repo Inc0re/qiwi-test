@@ -37,8 +37,6 @@ function App() {
     return date.toLocaleString('en-GB')
   }
 
-  formatDate('2023-07-20T11:30:00+03:00')
-
   function getDisplyData(data, currency) {
     if (!data.Valute) return
     const { Name, Value, Previous, CharCode, ID } = data.Valute[currency]
