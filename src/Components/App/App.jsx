@@ -84,7 +84,7 @@ function App() {
 
   return (
     <div className='app'>
-      <h1 className='app__title'>Курсы валют</h1>
+      <h1 className='app__title'>Курс валют</h1>
       <Selector
         options={currencyArray}
         defaultOption='Выберите валюту'
