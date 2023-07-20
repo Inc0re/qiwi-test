@@ -4,9 +4,9 @@ const display = document.querySelector('.display')
 const displayTitle = document.querySelector('.display__title')
 const rowNow = document.querySelector('.row-now')
 const rowPrev = document.querySelector('.row-prev')
-let data
-// let currenciesData, currencyArray
+let data // переменная для данных с сервера
 
+// получение данных с сервера
 async function getCurrencies() {
   try {
     const response = await fetch('https://www.cbr-xml-daily.ru/daily_json.js')
@@ -17,6 +17,7 @@ async function getCurrencies() {
   }
 }
 
+// получение массива валют для селектора
 function getCurrencyArray(data) {
   const currencyArray = []
   for (let key in data) {
@@ -27,16 +28,17 @@ function getCurrencyArray(data) {
   return currencyArray
 }
 
+// форматирование даты в вид dd.mm.yyyy hh:mm:ss
 function formatDate(dateString) {
   const date = new Date(dateString)
 
   return date.toLocaleString('en-GB')
 }
 
+// преобразование данных для отображения в display
 function getDisplayData(data, currency) {
   if (!data.Valute) return
   const { Name, Value, Previous, CharCode, ID } = data.Valute[currency]
-  // получаем дату и форматируем ее
   const date = formatDate(data.Date)
   const prevDate = formatDate(data.PreviousDate)
 
@@ -51,6 +53,7 @@ function getDisplayData(data, currency) {
   }
 }
 
+// создание option для дальнейшего добавления в селектор
 function getOption(data) {
   const option = optionSelector.cloneNode(true)
   option.textContent = data.display
@@ -58,7 +61,9 @@ function getOption(data) {
   return option
 }
 
+// обработчик события выбора валюты
 function handleSelect(event) {
+  // если выбрана пустая опция, то прячем display
   if (!event.target.value) {
     changeVisibility(display, false)
     return
@@ -71,6 +76,7 @@ function handleSelect(event) {
   changeVisibility(display, true)
 }
 
+// изменение видимости элемента
 function changeVisibility(element, visibility) {
   if (visibility) {
     element.classList.remove('hidden')
@@ -79,17 +85,20 @@ function changeVisibility(element, visibility) {
   }
 }
 
+// основная функция
 async function main() {
-  changeVisibility(display, false)
-  data = await getCurrencies()
-  const currencyArray = getCurrencyArray(data.Valute)
+  changeVisibility(display, false) // прячем display
+  data = await getCurrencies() // получаем данные с сервера
+  const currencyArray = getCurrencyArray(data.Valute) // получаем массив валют
 
+  // добавляем option для каждой валюты в селектор
   currencyArray.forEach(currency => {
     const option = getOption(currency)
     selector.append(option)
   })
+
+  // установка обработчика события выбора валюты
+  selector.addEventListener('change', handleSelect)
 }
 
 main()
-
-selector.addEventListener('change', handleSelect)
